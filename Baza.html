@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Музичні Хіти</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #181818, #323232);
+            color: white;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background: #111;
+            text-align: center;
+            padding: 20px;
+            font-size: 1.8em;
+            font-weight: bold;
+            letter-spacing: 1px;
+            color: #ff4c4c;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 30px;
+            padding: 40px;
+            flex-wrap: wrap;
+        }
+
+        .artist-card {
+            background: #222;
+            border-radius: 20px;
+            padding: 20px;
+            width: 300px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+            transition: transform 0.2s, box-shadow 0.3s;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .artist-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255, 76, 76, 0.4);
+        }
+
+        .artist-card.selected {
+            border: 2px solid #ff4c4c;
+            box-shadow: 0 0 20px rgba(255, 76, 76, 0.7);
+        }
+
+        .artist-photo {
+            width: 100%;
+            height: 250px;
+            background: #444;
+            border-radius: 15px;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .artist-name {
+            text-align: center;
+            font-size: 1.5em;
+            margin-top: 15px;
+            color: #ff4c4c;
+        }
+
+        .song-list {
+            margin-top: 10px;
+            list-style: none;
+            padding-left: 10px;
+        }
+
+        .song-list li {
+            padding: 5px 0;
+            border-bottom: 1px solid #555;
+        }
+
+        footer {
+            text-align: center;
+            color: #999;
+            padding: 20px;
+            background: #111;
+            font-size: 0.9em;
+        }
+
+        .add-artist {
+            display: inline-block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background: #ff4c4c;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .add-artist:hover {
+            background: #ff2222;
+        }
+
+        .result-box {
+            background: #1e1e1e;
+            margin: 30px auto;
+            width: 80%;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+            display: none;
+        }
+
+        .result-box h2 {
+            color: #ff4c4c;
+            text-align: center;
+        }
+
+    </style>
+</head>
+<body>
+
+<header>🎵 Музична бібліотека</header>
+
+<div style="text-align:center;">
+    <button class="add-artist">Переглянути спільні треки</button>
+</div>
+
+<div class="container">
+
+    <div class="artist-card" data-name="Lovv66">
+        <div class="artist-photo" style="background-image: url('https://i1.sndcdn.com/artworks-6Hm8dyvOR3tch1an-fv7Mxg-t500x500.jpg');"></div>
+        <div class="artist-name">Lovv66</div>
+        <ul class="song-list">
+            <li>PUZZLES</li>
+            <li>ФИЗИКАЛ ПЕЙН</li>
+            <li>БЕСТ ФРЕНДС</li>
+            <li>GLORYLIGIONS</li>
+            <li>SNIPER66</li>
+            <li>BARTER 66</li>
+        </ul>
+    </div>
+
+    <div class="artist-card" data-name="OG Buda">
+        <div class="artist-photo" style="background-image: url('https://notjustok.com/wp-content/uploads/2024/10/OG-Buda.png');"></div>
+        <div class="artist-name">OG Buda</div>
+        <ul class="song-list">
+            <li>SZN</li>
+            <li>FREERIO 3</li>
+            <li>POX VAWE</li>
+            <li>POX VAWE 0.5</li>
+            <li>Скучаю но работаю</li>
+            <li>FREERIO 2</li>
+            <li>SEXY DRILL</li>
+            <li>FREERIO 1</li>
+            <li>ОПГ СИТИ</li>
+            <li>Сладких снов</li>
+        </ul>
+    </div>
+
+    <div class="artist-card" data-name="Платина">
+        <div class="artist-photo" style="background-image: url('https://api.nsn.fm/storage/medialib/385576/mobile_image-ef9d3184e26e81d709ff35a58b739e0b.jpg');"></div>
+        <div class="artist-name">Платина</div>
+        <ul class="song-list">
+            <li>Платина</li>
+            <li>SOSA MUZIK</li>
+            <li>Опиаты круг</li>
+            <li>Сладких снов</li>
+            <li>РНБ Клуб</li>
+        </ul>
+    </div>
+
+</div>
+
+<!-- Блок результату -->
+<div class="result-box" id="resultBox">
+    <h2>🎧 Спільні треки</h2>
+    <p id="resultText">Оберіть двох виконавців, щоб переглянути спільні треки.</p>
+</div>
+
+<footer>© 2025 Музичний сайт — створено з ❤️</footer>
+
+<script>
+    const cards = document.querySelectorAll('.artist-card');
+    const resultBox = document.getElementById('resultBox');
+    const resultText = document.getElementById('resultText');
+    let selected = [];
+
+    const collaborations = {
+        'Lovv66+OG Buda': [
+            'Тоска — OG Buda & Lovv66',
+            '<audio src ="toska.mp3.mp3" controls></audio>',
+            'Неправильно — Lovv66 & OG Buda',
+            '<audio src ="nep.mp3.mp3" controls></audio>',
+            'КУП2Х — OG Buda & Lovv66',
+            'Снова — OG Buda & Mayot, Lovv66'
+        ],
+        'Платина+Lovv66': [
+            'Гринч — Платина & Lovv66',
+            'Одна — Платина & Lovv66',
+            'Валына — Lovv66 & Платина'
+        ],
+        'Платина+OG Buda': [
+            'Утро — OG Buda & Платина',
+            'Сладких снов (альбом) — Платина & OG Buda',
+            'Воссап — OG Buda & Платина',
+            'Это не любов — Платина & OG Buda',
+            'Выше облаков — OG Buda & Платина , Feduk , Obladaet ',
+            'Abu Dhabi Ba6y — Платина & OG Buda, Mayot'
+        ]
+    };
+
+    cards.forEach(card => {
+        card.addEventListener('click', () => {
+            const name = card.dataset.name;
+
+            if (card.classList.contains('selected')) {
+                card.classList.remove('selected');
+                selected = selected.filter(n => n !== name);
+            } else if (selected.length < 2) {
+                card.classList.add('selected');
+                selected.push(name);
+            } else {
+                alert("Можна обрати максимум двох виконавців 🎵");
+            }
+        });
+    });
+
+    document.querySelector('.add-artist').addEventListener('click', () => {
+        if (selected.length < 2) {
+            alert("Оберіть двох виконавців, щоб переглянути спільні треки 🎤");
+            return;
+        }
+
+        const combo1 = `${selected[0]}+${selected[1]}`;
+        const combo2 = `${selected[1]}+${selected[0]}`;
+        const songs = collaborations[combo1] || collaborations[combo2];
+
+        resultBox.style.display = 'block';
+        if (songs) {
+            resultText.innerHTML = `
+                Ви обрали: <strong>${selected[0]}</strong> і <strong>${selected[1]}</strong>.<br><br>
+                ${songs.map(s => `🎵 ${s}`).join('<br>')}
+            `;
+        } else {
+            resultText.innerHTML = `
+                Ви обрали: <strong>${selected[0]}</strong> і <strong>${selected[1]}</strong>.<br><br>
+                😢 Спільних треків не знайдено.
+            `;
+        }
+    });
+</script>
+
+</body>
+</html>
+можеш додати щоб після того коли ми обрали виконавців і перглядаємо їхні спільні треки  коло назви самих треків була кномка play яка буде вмикати пісню яку я додам через посилання
+
